@@ -1,5 +1,18 @@
+@import '~antd/dist/antd.css';
+
+.SearchBox {
+    margin: 1rem;
+}
+
+.HolidayList {
+    width: 30rem;
+}
+
 .App {
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .App-logo {
