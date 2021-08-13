@@ -11,14 +11,12 @@ const url = holidayApi.baseUrl + "holidays?key=" + key + "&country=" + country +
 
 function App() {
     const [holidays, setHolidays] = useState([]);
-    const [filteredHolidays, setFilteredHolidays] = useState([]);
     const [text, setText] = useState("");
 
-    function filter(input) {
-        console.log(input);
-        setText(input);
-        setFilteredHolidays(holidays.filter(holiday => holiday.name.toLowerCase().includes(input.toLowerCase())));
+    function filter() {
+        var filteredHolidays = holidays.filter(holiday => holiday.name.toLowerCase().includes(text.toLowerCase()));
         console.log(filteredHolidays);
+        return filteredHolidays;
     }
 
     useEffect(() => {
@@ -30,7 +28,6 @@ function App() {
             console.log(holidays);
             console.log(result);
             setHolidays(result);
-            setFilteredHolidays(result);
         }
         fetchData();
     },
@@ -42,7 +39,7 @@ function App() {
                 style={{width: 200,}}
                 options={holidays.map(holiday => {return {value: holiday.name}})}
                 placeholder="Type to filter"
-                onChange = {_.debounce(filter, 500)}
+                onChange = {_.debounce(setText, 500)}
                 filterOption={(inputValue, option) =>
                 option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
@@ -51,7 +48,7 @@ function App() {
                 className = "HolidayList"
                 size="large"
                 bordered
-                dataSource={filteredHolidays}
+                dataSource={filter()}
                 renderItem={holiday =>
                 <List.Item key={holiday.uuid}>
                     <List.Item.Meta
