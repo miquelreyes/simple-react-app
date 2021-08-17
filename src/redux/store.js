@@ -1,30 +1,35 @@
-import { createStore } from 'redux';
+import { FETCH_REQUEST, FETCH_SUCCESS, FILTER } from '../constants';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 
-function reducer(state = {holidays: [], filtered: [], loading: true}, action) {
-    if (action.type === "loading") {
-        return {
-            ...state,
-            loading: true
-        };
-    }
-
-    if (action.type === "initialize") {
-        return {
-            holidays: action.value,
-            filtered: action.value,
-            loading: false
-        };
-    }
-    if (action.type === "filter") {
-        let filteredHolidays = state.holidays.filter(holiday => holiday.name.toLowerCase().includes(action.value.toLowerCase()));
-        console.log(filteredHolidays);
-        return {
-            ...state,
-            filtered: filteredHolidays
-        };
-    }
-
-    return state;
+const initialState = {
+    holidays: [],
+    filtered: [],
+    loading: false
 }
 
-export default createStore(reducer);
+function reducer(state = initialState, action) {
+    switch (action.type) {
+        case FETCH_REQUEST:
+            return {
+                ...state,
+                loading: true
+            };
+        case FETCH_SUCCESS:
+            return {
+                holidays: action.value,
+                filtered: action.value,
+                loading: false
+            };
+        case FILTER:
+            let filteredHolidays = state.holidays.filter(holiday => holiday.name.toLowerCase().includes(action.value.toLowerCase()));
+            return {
+                ...state,
+                filtered: filteredHolidays
+            };
+        default:
+            return state;
+    }
+}
+
+export default createStore(reducer, applyMiddleware(thunk));

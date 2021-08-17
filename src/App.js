@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import _ from "lodash";
 import { List, AutoComplete, Button } from 'antd';
 import key from './apikey'
+import { FETCH_REQUEST, FETCH_SUCCESS, FILTER } from './constants';
 import { HolidayAPI } from 'holidayapi';
 
 function getApiUrl(key) {
@@ -13,6 +14,20 @@ function getApiUrl(key) {
     const url = holidayApi.baseUrl + "holidays?key=" + key + "&country=" + country + "&year=" + year;
     return url;
 }
+
+const fetchData = () => async (dispatch) => {
+    dispatch({type: FETCH_REQUEST});
+
+    try {
+        let holidays = await fetch(getApiUrl(key));
+        holidays = await holidays.json();
+
+        const array = holidays.holidays.map((holiday) => {return holiday;});
+        dispatch({type: FETCH_SUCCESS, value: array});
+    } catch(error) {
+    }
+}
+
 function App() {
     const holidays = useSelector(store => store.holidays);
     const filtered = useSelector(store => store.filtered);
@@ -20,22 +35,13 @@ function App() {
 
     const dispatch = useDispatch();
 
-    async function fetchData() {
-        dispatch({type: "loading"});
-        let holidays = await fetch(getApiUrl(key));
-        holidays = await holidays.json();
-
-        const array = holidays.holidays.map((holiday) => {return holiday;});
-        dispatch({type: "initialize", value: array});
-    }
-
     useEffect(() => {
-        fetchData();
+        dispatch(fetchData());
     },
     []);
 
     function filter(text) {
-        dispatch({type: "filter", value: text})
+        dispatch({type: FILTER, value: text})
     }
 
     return (
@@ -52,7 +58,7 @@ function App() {
             />
             <Button
                 className="FetchButton"
-                onClick={fetchData}>
+                onClick={() => dispatch(fetchData())}>
                 Fetch data again
             </Button>
             <List
