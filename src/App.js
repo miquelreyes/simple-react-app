@@ -1,37 +1,42 @@
-import { List, AutoComplete } from 'antd';
 import './App.css';
-import { HolidayAPI } from 'holidayapi';
-import { useEffect, useState, useReducer } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
 import _ from "lodash";
-const key = '3fcaf5be-c201-4a4d-8644-8669aac1d051'
-const holidayApi = new HolidayAPI({ key });
-const country = "ES";
-const year = "2020";
-const url = holidayApi.baseUrl + "holidays?key=" + key + "&country=" + country + "&year=" + year;
+import { List, AutoComplete, Button } from 'antd';
+import key from './apikey'
+import { HolidayAPI } from 'holidayapi';
 
+function getApiUrl(key) {
+    const holidayApi = new HolidayAPI({ key });
+    const country = "ES";
+    const year = "2020";
+    const url = holidayApi.baseUrl + "holidays?key=" + key + "&country=" + country + "&year=" + year;
+    return url;
+}
 function App() {
-    const [holidays, setHolidays] = useState([]);
-    const [filtered, dispatch] = useReducer(filter, []);
+    const holidays = useSelector(store => store.holidays);
+    const filtered = useSelector(store => store.filtered);
+    const loading = useSelector(store => store.loading);
 
-    function filter(state, text) {
-        var filteredHolidays = holidays.filter(holiday => holiday.name.toLowerCase().includes(text.toLowerCase()));
-        console.log(filteredHolidays);
-        return filteredHolidays;
-    }
+    const dispatch = useDispatch();
 
     async function fetchData() {
-        let holidays = await fetch(url);
+        dispatch({type: "loading"});
+        let holidays = await fetch(getApiUrl(key));
         holidays = await holidays.json();
 
         const array = holidays.holidays.map((holiday) => {return holiday;});
-        setHolidays(array);
-        dispatch("");
+        dispatch({type: "initialize", value: array});
     }
 
     useEffect(() => {
         fetchData();
     },
     []);
+
+    function filter(text) {
+        dispatch({type: "filter", value: text})
+    }
 
     return (
         <div className="App">
@@ -40,15 +45,21 @@ function App() {
                 style={{width: 200,}}
                 options={holidays.map(holiday => {return {value: holiday.name}})}
                 placeholder="Type to filter"
-                onChange = {_.debounce(dispatch, 500)}
+                onChange = {_.debounce(filter, 500)}
                 filterOption={(inputValue, option) =>
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
                 }
             />
+            <Button
+                className="FetchButton"
+                onClick={fetchData}>
+                Fetch data again
+            </Button>
             <List
                 className = "HolidayList"
                 size="large"
                 bordered
+                loading={loading}
                 dataSource={filtered}
                 renderItem={holiday =>
                 <List.Item key={holiday.uuid}>
