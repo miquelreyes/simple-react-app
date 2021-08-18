@@ -71,8 +71,8 @@ function App() {
                 <List.Item key={holiday.uuid}>
                     <List.Item.Meta
                         title = {holiday.name}
-                        description = {holiday.date}/>
-                        {holiday.weekday.date.name}
+                        description = {holiday.weekday.date.name}/>
+                        {holiday.date}
                 </List.Item>}
             />
         </div>
