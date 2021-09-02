@@ -1,9 +1,5 @@
 @import '~antd/dist/antd.css';
 
-.HolidayList {
-    width: 30rem;
-}
-
 .App {
     display: flex;
     flex-direction: column;

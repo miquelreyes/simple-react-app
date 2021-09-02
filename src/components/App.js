@@ -2,7 +2,9 @@ import './App.css';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import _ from "lodash";
-import { List, AutoComplete, Button } from 'antd';
+import SearchBox from './SearchBox';
+import FetchButton from './FetchButton';
+import HolidayList from './HolidayList';
 import key from '../apikey'
 import { HolidayAPI } from 'holidayapi';
 import { fetchHolidaysStart, fetchHolidaysSuccess, updateSearchText } from '../redux/actions/holidaysActions';
@@ -38,17 +40,17 @@ const fetchData = () => async (dispatch) => {
     dispatch(fetchHolidaysStart());
 
     try {
-        let holidays = await fetch(getApiUrl(key));
-        holidays = await holidays.json();
+        let response = await fetch(getApiUrl(key));
+        response = await response.json();
 
-        const array = holidays.holidays.map((holiday) => {return holiday;});
-        const arrangedHolidays = arrangeHolidays(array);
+        const holidays = response.holidays.map((holiday) => {return holiday;});
+        const arrangedHolidays = arrangeHolidays(holidays);
         dispatch(fetchHolidaysSuccess(arrangedHolidays));
     } catch(error) {
     }
 }
 
-function App() {    
+const App = () => {    
     const holidays = useSelector(selectHolidays);
     const loading = useSelector(selectLoading);
     const filtered = useSelector(selectFilteredHolidays);
@@ -64,36 +66,25 @@ function App() {
         dispatch(updateSearchText(text));
     }
 
+    const debouncedUpdateText = _.debounce(updateText, 500);
+
     return (
         <div className="App">
-            <AutoComplete
-                className = "SearchBox"
-                style={{width: 200,}}
+            <SearchBox
                 options={holidays.map(holiday => {return {value: holiday.name}})}
                 placeholder="Type to filter"
-                onChange = {_.debounce(updateText, 500)}
+                onChange = {debouncedUpdateText}
                 filterOption={(inputValue, option) =>
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
                 }
             />
-            <Button
-                className="FetchButton"
-                onClick={() => dispatch(fetchData())}>
-                Fetch data again
-            </Button>
-            <List
-                className = "HolidayList"
-                size="large"
-                bordered
+            <FetchButton
+                onClick={() => dispatch(fetchData())}
+                text={"Fetch data again"}
+            />
+            <HolidayList
                 loading={loading}
-                dataSource={filtered}
-                renderItem={holiday =>
-                <List.Item key={holiday.id}>
-                    <List.Item.Meta
-                        title = {holiday.name}
-                        description = {holiday.weekday}/>
-                        {holiday.date}
-                </List.Item>}
+                holidays={filtered}
             />
         </div>
     );
