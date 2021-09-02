@@ -1,10 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import { applyMiddleware, createStore, compose } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import holidaysReducers from './redux/reducers/holidaysReducers';
+
+const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(holidaysReducers, composedEnhancer(applyMiddleware(thunk)));
 
 ReactDOM.render(
     <Provider store={store}>
