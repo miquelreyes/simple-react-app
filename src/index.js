@@ -4,13 +4,18 @@ import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { applyMiddleware, createStore, compose } from 'redux';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import mySaga from './sagas';
 import holidaysReducers from './redux/reducers/holidaysReducers';
 
 const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(holidaysReducers, composedEnhancer(applyMiddleware(thunk)));
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(holidaysReducers, composedEnhancer(applyMiddleware(sagaMiddleware)));
+
+sagaMiddleware.run(mySaga);
 
 ReactDOM.render(
     <Provider store={store}>

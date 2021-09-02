@@ -1,5 +1,11 @@
 import * as types from '../types';
 
+export const fetchHolidaysRequest = () => {
+    return {
+        type: types.FETCH_HOLIDAYS_REQUEST
+    }
+}
+
 export const fetchHolidaysStart = () => {
     return {
         type: types.FETCH_HOLIDAYS_START
