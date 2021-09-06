@@ -19,6 +19,12 @@ export const fetchHolidaysSuccess = (holidays) => {
     }
 }
 
+export const fetchHolidaysError = () => {
+    return {
+        type: types.FETCH_HOLIDAYS_ERROR
+    }
+}
+
 export const addHolidayRequest = (holiday) => {
     return {
         type: types.ADD_HOLIDAY_REQUEST,

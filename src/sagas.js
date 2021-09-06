@@ -1,5 +1,5 @@
 import { put, select, takeLatest, all } from 'redux-saga/effects';
-import { fetchHolidaysStart, fetchHolidaysSuccess, loadingStart, addHolidaySuccess } from './redux/actions/holidaysActions';
+import { fetchHolidaysStart, fetchHolidaysSuccess, loadingStart, addHolidaySuccess, fetchHolidaysError } from './redux/actions/holidaysActions';
 import { FETCH_HOLIDAYS_REQUEST, ADD_HOLIDAY_REQUEST } from './redux/types';
 
 import key from './apikey'
@@ -17,25 +17,20 @@ function getApiUrl(key) {
 }
 
 const arrangeHolidays = (array) => {
-    let id = 0;
-    let holidays = [];
-
-    array.forEach(holiday => {
-        let element = {
-            id: id,
+    let holidays = array.map((holiday, index) => {
+        return {
+            id: index+1,
             name: holiday.name,
             date: holiday.date,
             weekday: holiday.weekday.date.name
         }
-        holidays.push(element);
-        id++;
     });
 
     return holidays;
 }
 
 const getWeekday = (dateAsString) => {
-    var date = new Date(dateAsString);
+    let date = new Date(dateAsString);
     switch (date.getDay()) {
         case 0:
             return "Sunday";
@@ -66,7 +61,7 @@ function* fetchHolidays() {
         const arrangedHolidays = arrangeHolidays(holidays);
         yield put(fetchHolidaysSuccess(arrangedHolidays));
     } catch (e) {
-
+        yield put(fetchHolidaysError());
     }
 }
 
