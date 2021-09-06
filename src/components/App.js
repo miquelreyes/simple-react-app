@@ -5,13 +5,16 @@ import _ from "lodash";
 import SearchBox from './SearchBox';
 import FetchButton from './FetchButton';
 import HolidayList from './HolidayList';
-import { fetchHolidaysRequest, updateSearchText } from '../redux/actions/holidaysActions';
-import { selectHolidays, selectFilteredHolidays, selectLoading } from '../redux/selectors/holidaysSelectors';
+import AddHolidayForm from './AddHolidayForm';
+import { addHolidayRequest, fetchHolidaysRequest, updateSearchText, toggleAddForm } from '../redux/actions/holidaysActions';
+import { selectHolidays, selectFilteredHolidays, selectLoading, selectShowForm } from '../redux/selectors/holidaysSelectors';
+import { Button } from 'antd';
 
 const App = () => {    
     const holidays = useSelector(selectHolidays);
     const loading = useSelector(selectLoading);
     const filtered = useSelector(selectFilteredHolidays);
+    const showingForm = useSelector(selectShowForm);
     
     const dispatch = useDispatch();
     
@@ -36,6 +39,14 @@ const App = () => {
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
                 }
             />
+            <Button
+                onClick={() => dispatch(toggleAddForm())}
+            >
+                {showingForm ? "Hide form" : "Add holiday"}
+            </Button>
+            {showingForm && <AddHolidayForm
+                onSubmit={(holiday) => dispatch(addHolidayRequest(holiday))}
+            />}
             <FetchButton
                 onClick={() => dispatch(fetchHolidaysRequest())}
                 text={"Fetch data again"}

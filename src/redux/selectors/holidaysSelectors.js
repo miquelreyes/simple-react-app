@@ -19,4 +19,8 @@ export const selectFilteredHolidays = createSelector(
     }
 );
 
+export const selectHolidaysLength = state => state.holidays.byId.length;
+
 export const selectLoading = state => state.loading;
+
+export const selectShowForm = state => state.showForm;

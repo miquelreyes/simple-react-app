@@ -1,9 +1,12 @@
-import { put, takeLatest } from 'redux-saga/effects';
-import { fetchHolidaysStart, fetchHolidaysSuccess } from './redux/actions/holidaysActions';
-import { FETCH_HOLIDAYS_REQUEST } from './redux/types';
+import { put, select, takeLatest, all } from 'redux-saga/effects';
+import { fetchHolidaysStart, fetchHolidaysSuccess, loadingStart, addHolidaySuccess } from './redux/actions/holidaysActions';
+import { FETCH_HOLIDAYS_REQUEST, ADD_HOLIDAY_REQUEST } from './redux/types';
 
 import key from './apikey'
 import { HolidayAPI } from 'holidayapi';
+import { selectHolidaysLength } from './redux/selectors/holidaysSelectors';
+
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
 function getApiUrl(key) {
     const holidayApi = new HolidayAPI({ key });
@@ -31,6 +34,28 @@ const arrangeHolidays = (array) => {
     return holidays;
 }
 
+const getWeekday = (dateAsString) => {
+    var date = new Date(dateAsString);
+    switch (date.getDay()) {
+        case 0:
+            return "Sunday";
+        case 1:
+            return "Monday";
+        case 2:
+            return "Tuesday";
+        case 3:
+            return "Wednesday";
+        case 4:
+            return "Thursday";
+        case 5:
+            return "Friday";
+        case 6:
+            return "Saturday";
+        default:
+            return "Monday";
+    }
+}
+
 function* fetchHolidays() {
     yield put(fetchHolidaysStart());
     try {
@@ -45,8 +70,30 @@ function* fetchHolidays() {
     }
 }
 
-function* mySaga() {
+function* addHoliday(action) {
+    yield put(loadingStart());
+    const newId = yield select(selectHolidaysLength) + 1;
+    const newHoliday = {
+        id: newId,
+        name: action.holiday.name,
+        date: action.holiday.date,
+        weekday: getWeekday(action.holiday.date),
+    }
+    yield delay(500);
+    yield put(addHolidaySuccess(newHoliday));
+}
+
+function* fetchHolidaysSaga() {
     yield takeLatest(FETCH_HOLIDAYS_REQUEST, fetchHolidays);
 }
 
-export default mySaga;
+function* addHolidaySaga() {
+    yield takeLatest(ADD_HOLIDAY_REQUEST, addHoliday);
+}
+
+export default function* rootSaga() {
+    yield all([
+        fetchHolidaysSaga(),
+        addHolidaySaga()
+    ])
+  }
