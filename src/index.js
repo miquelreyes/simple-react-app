@@ -8,6 +8,19 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/sagas';
 import holidaysReducers from './redux/reducers/holidaysReducers';
+import 'antd/dist/antd.css';
+import styled from 'styled-components';
+
+const StyledApp = styled(App)`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    > * {
+        margin: 0.5rem;
+    }
+`;
 
 const composedEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -20,7 +33,7 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
     <Provider store={store}>
         <React.StrictMode>
-            <App />
+            <StyledApp className="App"/>
         </React.StrictMode>
     </Provider>,
   document.getElementById('root')

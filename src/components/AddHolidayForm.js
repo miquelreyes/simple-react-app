@@ -6,7 +6,7 @@ const AddHolidayForm = (props) => {
     const { register, handleSubmit } = useForm();
 
     return (
-        <form className="AddHolidayForm" onSubmit={handleSubmit(props.onSubmit)}>
+        <form className={props.className} onSubmit={handleSubmit(props.onSubmit)}>
             <label>Name:</label>
             <input {...register("name", { required: true, maxLength: 30 })} />
             <label>Date:</label>

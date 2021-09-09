@@ -5,12 +5,61 @@ import _ from "lodash";
 import SearchBox from '../components/SearchBox';
 import FetchButton from '../components/FetchButton';
 import HolidayList from '../components/HolidayList';
-import AddHolidayForm from '../components/AddHolidayForm';
+import AddHolidayForm from '../components/AddHolidayForm'
 import { addHolidayRequest, fetchHolidaysRequest, updateSearchText, toggleAddForm } from '../redux/actions/holidaysActions';
 import { selectHolidays, selectFilteredHolidays, selectLoading, selectShowForm } from '../redux/selectors/holidaysSelectors';
 import { Button } from 'antd';
+import styled from 'styled-components';
 
-const App = () => {    
+const StyledButton = styled(Button)`
+    border-style: solid;
+    border-width: 2px;
+    font-weight: 500;
+    border-color: palevioletred;
+    color: palevioletred;
+    :hover {
+        color: lightsalmon;
+        border-color: lightsalmon;
+    }
+    :focus {
+        color: palevioletred;
+        border-color: palevioletred;
+    }
+`;
+
+const StyledHolidayList = styled(HolidayList)`
+    width: 30rem;
+`;
+
+const StyledAddHolidayForm = styled(AddHolidayForm)`
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    padding: 1rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 1%;
+
+    > * {
+        margin: 0.2rem;
+    }
+
+    input {
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+        width: 100%;
+    }
+
+    button {
+        margin-top: 1rem;
+        align-self: center;
+        width: fit-content;
+    }
+`;
+
+const App = ({className}) => {    
     const holidays = useSelector(selectHolidays);
     const loading = useSelector(selectLoading);
     const filtered = useSelector(selectFilteredHolidays);
@@ -31,14 +80,14 @@ const App = () => {
 
     const options = useCallback(holidays.map(holiday => {return {value: holiday.name}}), [holidays]);
 
-    const toggleOnClick = useCallback(() => dispatch(toggleAddForm()), [dispatch]);
+    const toggleFormOnClick = useCallback(() => dispatch(toggleAddForm()), [dispatch]);
 
     const addOnSubmit = useCallback((holiday) => dispatch(addHolidayRequest(holiday)), [dispatch]);
 
     const fetchOnClick = useCallback(() => dispatch(fetchHolidaysRequest()), [dispatch]);
 
     return (
-        <div className="App">
+        <div className={className}>
             <SearchBox
                 options={options}
                 placeholder="Type to filter"
@@ -46,19 +95,19 @@ const App = () => {
                 filterOption={(inputValue, option) => 
                 option.value.toLowerCase().includes(inputValue.toLowerCase())}
             />
-            <Button
-                onClick={toggleOnClick}
+            <StyledButton
+                onClick={toggleFormOnClick}
             >
                 {showingForm ? "Hide form" : "Add holiday"}
-            </Button>
-            {showingForm && <AddHolidayForm
+            </StyledButton>
+            {showingForm && <StyledAddHolidayForm
                 onSubmit={addOnSubmit}
             />}
             <FetchButton
                 onClick={fetchOnClick}
                 text={"Fetch data again"}
             />
-            <HolidayList
+            <StyledHolidayList
                 loading={loading}
                 holidays={filtered}
             />

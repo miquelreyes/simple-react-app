@@ -8,7 +8,7 @@ const getSearchQuery = (text) => {
 const HolidayList = (props) => {
     return (
         <List
-            className = "HolidayList"
+            className = {props.className}
             size="large"
             bordered
             loading={props.loading}
