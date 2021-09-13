@@ -10,6 +10,7 @@ import { addHolidayRequest, fetchHolidaysRequest, updateSearchText, toggleAddFor
 import { selectHolidays, selectFilteredHolidays, selectLoading, selectShowForm } from '../redux/selectors/holidaysSelectors';
 import { Button } from 'antd';
 import styled from 'styled-components';
+import Switch from '../components/DarkReader'
 
 const StyledButton = styled(Button)`
     border-style: solid;
@@ -88,6 +89,7 @@ const App = ({className}) => {
 
     return (
         <div className={className}>
+            <Switch/>
             <SearchBox
                 options={options}
                 placeholder="Type to filter"
