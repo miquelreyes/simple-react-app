@@ -10,7 +10,9 @@ import { addHolidayRequest, fetchHolidaysRequest, updateSearchText, toggleAddFor
 import { selectHolidays, selectFilteredHolidays, selectLoading, selectShowForm } from '../redux/selectors/holidaysSelectors';
 import { Button } from 'antd';
 import styled from 'styled-components';
-import Switch from '../components/DarkReader'
+import Switch from '../components/DarkReader';
+import { Calendar } from '../components/Calendar';
+import { useIdle } from 'react-use';
 
 const StyledButton = styled(Button)`
     border-style: solid;
@@ -30,6 +32,14 @@ const StyledButton = styled(Button)`
 
 const StyledHolidayList = styled(HolidayList)`
     width: 30rem;
+`;
+
+const StyledCalendar = styled(Calendar)`
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 1%;
+    padding: 1rem;
 `;
 
 const StyledAddHolidayForm = styled(AddHolidayForm)`
@@ -65,6 +75,7 @@ const App = ({className}) => {
     const loading = useSelector(selectLoading);
     const filtered = useSelector(selectFilteredHolidays);
     const showingForm = useSelector(selectShowForm);
+    const isIdle = useIdle(60e3);
     
     const dispatch = useDispatch();
     
@@ -90,6 +101,7 @@ const App = ({className}) => {
     return (
         <div className={className}>
             <Switch/>
+            {isIdle && <div>😴😴😴😴 Wake up 😴😴😴😴</div>}
             <SearchBox
                 options={options}
                 placeholder="Type to filter"
@@ -108,6 +120,9 @@ const App = ({className}) => {
             <FetchButton
                 onClick={fetchOnClick}
                 text={"Fetch data again"}
+            />
+            <StyledCalendar 
+                holidays={holidays}
             />
             <StyledHolidayList
                 loading={loading}
