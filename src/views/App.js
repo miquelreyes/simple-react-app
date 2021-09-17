@@ -98,6 +98,9 @@ const App = ({className}) => {
 
     const fetchOnClick = useCallback(() => dispatch(fetchHolidaysRequest()), [dispatch]);
 
+    const filterOption =  useCallback((inputValue, option) => 
+        option.value.toLowerCase().includes(inputValue.toLowerCase()));
+
     return (
         <div className={className}>
             <Switch/>
@@ -106,8 +109,7 @@ const App = ({className}) => {
                 options={options}
                 placeholder="Type to filter"
                 onChange = {debouncedUpdateText}
-                filterOption={(inputValue, option) => 
-                option.value.toLowerCase().includes(inputValue.toLowerCase())}
+                filterOption={filterOption}
             />
             <StyledButton
                 onClick={toggleFormOnClick}
