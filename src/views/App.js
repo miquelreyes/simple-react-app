@@ -39,7 +39,7 @@ const StyledCalendar = styled(Calendar)`
     border-width: 1px;
     border-color: lightgray;
     border-radius: 1%;
-    padding: 1rem;
+    padding: 0.5rem;
 `;
 
 const StyledAddHolidayForm = styled(AddHolidayForm)`
@@ -89,15 +89,10 @@ const App = ({className}) => {
     }
 
     const debouncedUpdateText = _.debounce(updateText, 500);    
-
     const options = useCallback(holidays.map(holiday => {return {value: holiday.name}}), [holidays]);
-
     const toggleFormOnClick = useCallback(() => dispatch(toggleAddForm()), [dispatch]);
-
     const addOnSubmit = useCallback((holiday) => dispatch(addHolidayRequest(holiday)), [dispatch]);
-
     const fetchOnClick = useCallback(() => dispatch(fetchHolidaysRequest()), [dispatch]);
-
     const filterOption =  useCallback((inputValue, option) => 
         option.value.toLowerCase().includes(inputValue.toLowerCase()));
 

@@ -36,35 +36,37 @@ export const Calendar = (props) => {
         const [state, actions] = useCalendar(startingDate, {events});
 
         return (
-            <table className={props.className}>
-                <thead>
-                <tr>
-                    <td colSpan={5} style={{ textAlign: 'center' }}>
-                    <strong>{state.month} - {state.year}</strong>
-                    </td>
-                    <td colSpan={2} style={{ textAlign: 'right' }}>
-                    <Button onClick={actions.getPrevMonth}>
-                        <strong>&lt;</strong>
-                    </Button>              
-                    <Button onClick={actions.getNextMonth}>
-                        <strong>&gt;</strong>
-                    </Button>              
-                    </td>
-                </tr>
-                <tr>
-                    {state.days.map(day => <th key={day}>{day}</th>)}
-                </tr>
-                </thead>
-                <tbody>
-                {state.weeks.map((week, index) => 
-                    <tr key={index}>
-                    {week.map(
-                        day => renderDay(day)
-                    )}
+            <div className={props.className}>
+                <table>
+                    <thead>
+                    <tr>
+                        <td colSpan={5} style={{ textAlign: 'center' }}>
+                        <strong>{state.month} - {state.year}</strong>
+                        </td>
+                        <td colSpan={2} style={{ textAlign: 'right' }}>
+                        <Button onClick={actions.getPrevMonth}>
+                            <strong>&lt;</strong>
+                        </Button>              
+                        <Button onClick={actions.getNextMonth}>
+                            <strong>&gt;</strong>
+                        </Button>              
+                        </td>
                     </tr>
-                )}
-                </tbody>
-            </table>
+                    <tr>
+                        {state.days.map(day => <th key={day}>{day}</th>)}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {state.weeks.map((week, index) => 
+                        <tr key={index}>
+                        {week.map(
+                            day => renderDay(day)
+                        )}
+                        </tr>
+                    )}
+                    </tbody>
+                </table>
+            </div>
         );
     }
     else {
