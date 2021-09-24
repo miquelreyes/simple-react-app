@@ -1,62 +1,63 @@
 {
-  "name": "simple-react-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.6.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "antd": "^4.16.11",
-    "holidayapi": "^5.0.0",
-    "lodash": "^4.17.21",
-    "react": "^17.0.2",
-    "react-darkreader": "^1.5.6",
-    "react-dom": "^17.0.2",
-    "react-hook-form": "^7.14.2",
-    "react-redux": "^7.2.4",
-    "react-scripts": "4.0.3",
-    "react-use": "^17.3.1",
-    "react-use-calendar": "^1.0.0",
-    "redux": "^4.1.1",
-    "redux-saga": "^1.1.3",
-    "styled-components": "^5.3.1",
-    "web-vitals": "^1.1.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "plugin:react-hooks/recommended"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^5.9.2",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.25.1",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "2.4.1"
-  }
+	"name": "simple-react-app",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@reduxjs/toolkit": "^1.6.1",
+		"@testing-library/jest-dom": "^5.14.1",
+		"@testing-library/react": "^11.2.7",
+		"@testing-library/user-event": "^12.8.3",
+		"antd": "^4.16.11",
+		"holidayapi": "^5.0.0",
+		"lodash": "^4.17.21",
+		"react": "^17.0.2",
+		"react-darkreader": "^1.5.6",
+		"react-dom": "^17.0.2",
+		"react-hook-form": "^7.14.2",
+		"react-redux": "^7.2.4",
+		"react-scripts": "^4.0.3",
+		"react-use": "^17.3.1",
+		"react-use-calendar": "^1.0.0",
+		"redux": "^4.1.1",
+		"redux-saga": "^1.1.3",
+		"styled-components": "^5.3.1",
+		"web-vitals": "^1.1.2"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest",
+			"plugin:react-hooks/recommended"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"devDependencies": {
+		"babel-eslint": "^10.1.0",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-config-react-app": "^6.0.0",
+		"eslint-plugin-flowtype": "^5.9.2",
+		"eslint-plugin-import": "^2.24.2",
+		"eslint-plugin-jsx-a11y": "^6.4.1",
+		"eslint-plugin-react": "^7.25.1",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"prettier": "2.4.1"
+	}
 }
